@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('pionoid-dev-environment-.openWebview', async () => {
         const panel = vscode.window.createWebviewPanel(
             'pionoidDevEnvironment',
-            'Pionoid Dev Environment',
+            'Pionoid Dev Environment Extension',
             vscode.ViewColumn.One,
             {
                 enableScripts: true
@@ -119,7 +119,7 @@ function getWebviewContent(parsedContent: { [className: string]: { functions: st
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pionoid Dev Environment</title>
+        <title>Pionoid Dev Environment Extension</title>
         <style>
             body { font-family: Arial, sans-serif; }
             table {
@@ -130,7 +130,7 @@ function getWebviewContent(parsedContent: { [className: string]: { functions: st
                 border-bottom: 2px solid #021526;
             }
             .class-name {
-                text-align: center;
+                text-align: left;
                 font-size: 1.2em;
                 padding: 10px;
             }
@@ -184,17 +184,55 @@ function getWebviewContent(parsedContent: { [className: string]: { functions: st
                 left: 3px;
                 color: white;
             }
+            .collapsible {
+                background-color: #021526;
+                color: white;
+                cursor: pointer;
+                padding: 10px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 1.2em;
+            }
+            .active, .collapsible:hover {
+                background-color: transparent;
+            }
+            .content {
+                padding: 0 18px;
+                display: none;
+                overflow: hidden;
+                background-color: transparent;
+            }
         </style>
     </head>
     <body>
         <h1>Pionoid Dev Environment</h1>
-        <table>
-            ${classesList}
-        </table>
+        <button type="button" class="collapsible">Integrations</button>
+        <div class="content">
+            <table>
+                ${classesList}
+            </table>
+        </div>
         <script>
             function handleClick(className, functionName) {
                 alert('Class: ' + className + '\\nFunction: ' + functionName);
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var coll = document.getElementsByClassName("collapsible");
+                for (var i = 0; i < coll.length; i++) {
+                    coll[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        var content = this.nextElementSibling;
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                        }
+                    });
+                }
+            });
         </script>
     </body>
     </html>`;
